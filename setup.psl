@@ -1,0 +1,159 @@
+# Swift Development Environment Setup Script for Windows
+# Place this script in the root directory of your course repository
+
+# Check if running as administrator
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$isAdmin = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+if (-not $isAdmin) {
+    Write-Host "This script requires administrator privileges to install Docker components." -ForegroundColor Yellow
+    Write-Host "Please run this script as administrator and try again." -ForegroundColor Yellow
+    exit
+}
+
+# Function to check if a command exists
+function Test-CommandExists {
+    param ($command)
+    $oldPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'stop'
+    try {
+        if (Get-Command $command) { return $true }
+    } catch {
+        return $false
+    } finally {
+        $ErrorActionPreference = $oldPreference
+    }
+}
+
+# Function to check if Docker is running
+function Test-DockerRunning {
+    try {
+        $docker = docker info 2>&1
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+# Check for and install required software
+Write-Host "Checking for required software..." -ForegroundColor Cyan
+
+# Check for Visual Studio Code
+if (-not (Test-CommandExists code)) {
+    Write-Host "Visual Studio Code not found. Installing..." -ForegroundColor Yellow
+    $url = "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user"
+    $output = "$env:TEMP\VSCodeSetup.exe"
+    Invoke-WebRequest -Uri $url -OutFile $output
+    Start-Process -FilePath $output -Args "/VERYSILENT /NORESTART /MERGETASKS=!runcode" -Wait
+    Write-Host "Visual Studio Code installed successfully." -ForegroundColor Green
+} else {
+    Write-Host "Visual Studio Code already installed." -ForegroundColor Green
+}
+
+# Check for Docker Desktop
+if (-not (Test-CommandExists docker)) {
+    Write-Host "Docker Desktop not found. Installing..." -ForegroundColor Yellow
+    $url = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+    $output = "$env:TEMP\DockerDesktopInstaller.exe"
+    Invoke-WebRequest -Uri $url -OutFile $output
+    Start-Process -FilePath $output -Args "install --quiet" -Wait
+    Write-Host "Docker Desktop installed. Please restart your computer and run this script again." -ForegroundColor Green
+    exit
+} else {
+    Write-Host "Docker Desktop already installed." -ForegroundColor Green
+}
+
+# Check if Docker is running
+if (-not (Test-DockerRunning)) {
+    Write-Host "Docker is not running. Please start Docker Desktop and run this script again." -ForegroundColor Yellow
+    # Try to start Docker
+    Start-Process "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+    Write-Host "Attempted to start Docker Desktop. Please wait for it to start completely..." -ForegroundColor Yellow
+    $timeout = 60
+    $timer = [Diagnostics.Stopwatch]::StartNew()
+    while (-not (Test-DockerRunning) -and $timer.Elapsed.TotalSeconds -lt $timeout) {
+        Start-Sleep -Seconds 5
+        Write-Host "Waiting for Docker to start... ($([math]::Round($timer.Elapsed.TotalSeconds)) seconds)" -ForegroundColor Yellow
+    }
+    if (-not (Test-DockerRunning)) {
+        Write-Host "Docker could not be started automatically. Please start Docker Desktop manually and run this script again." -ForegroundColor Red
+        exit
+    }
+    Write-Host "Docker is now running!" -ForegroundColor Green
+} else {
+    Write-Host "Docker is running." -ForegroundColor Green
+}
+
+# Install VS Code Extensions
+Write-Host "Installing required VS Code extensions..." -ForegroundColor Cyan
+$extensions = @(
+    "ms-vscode-remote.remote-containers",
+    "ms-azuretools.vscode-docker",
+    "sswg.swift-lang",
+    "vadimcn.vscode-lldb"
+)
+
+foreach ($extension in $extensions) {
+    Write-Host "Installing $extension..." -ForegroundColor Yellow
+    & code --install-extension $extension --force
+    Write-Host "Installed $extension." -ForegroundColor Green
+}
+
+# Clone the repository
+$repoUrl = Read-Host "Enter the GitHub repository URL for your Swift course (or press Enter to skip)"
+if ($repoUrl) {
+    $targetDir = Read-Host "Enter the directory where you want to clone the repository (or press Enter for current directory)"
+    if (-not $targetDir) {
+        $targetDir = ".\swift-course"
+    }
+    
+    if (-not (Test-Path $targetDir)) {
+        New-Item -ItemType Directory -Path $targetDir | Out-Null
+    }
+    
+    Write-Host "Cloning repository to $targetDir..." -ForegroundColor Cyan
+    Set-Location -Path $targetDir
+    git clone $repoUrl .
+    
+    if ($?) {
+        Write-Host "Repository cloned successfully." -ForegroundColor Green
+    } else {
+        Write-Host "Failed to clone repository. Please check the URL and try again." -ForegroundColor Red
+        exit
+    }
+}
+
+# Open in VS Code
+Write-Host "Opening project in VS Code..." -ForegroundColor Cyan
+
+if (Test-Path ".vscode") {
+    Write-Host "VS Code configuration already exists." -ForegroundColor Green
+} else {
+    Write-Host "Setting up VS Code configuration..." -ForegroundColor Yellow
+    New-Item -ItemType Directory -Path ".vscode" | Out-Null
+    
+    # Create tasks.json file
+    $tasksJsonPath = ".vscode\tasks.json"
+    if (-not (Test-Path $tasksJsonPath)) {
+        Write-Host "Creating tasks.json..." -ForegroundColor Yellow
+        # Here you'd include the contents of your tasks.json
+        # This is a placeholder - you'd need to replace with actual content
+        Set-Content -Path $tasksJsonPath -Value "{`"version`": `"2.0.0`", `"tasks`": []}"
+    }
+    
+    # Create settings.json file
+    $settingsJsonPath = ".vscode\settings.json"
+    if (-not (Test-Path $settingsJsonPath)) {
+        Write-Host "Creating settings.json..." -ForegroundColor Yellow
+        # Here you'd include the contents of your settings.json
+        # This is a placeholder - you'd need to replace with actual content
+        Set-Content -Path $settingsJsonPath -Value "{}"
+    }
+}
+
+# Open VS Code
+code .
+
+Write-Host "Setup complete! VS Code should now open with your Swift development environment." -ForegroundColor Green
+Write-Host "When prompted, select 'Reopen in Container' to start developing with Swift." -ForegroundColor Green
+Write-Host "This will take a few minutes the first time as the container is built." -ForegroundColor Yellow

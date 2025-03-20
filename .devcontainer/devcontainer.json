@@ -1,0 +1,39 @@
+{
+  "name": "Swift Development Environment",
+  "dockerFile": "Dockerfile",
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt", "seccomp=unconfined"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "sswg.swift-lang",
+        "vadimcn.vscode-lldb",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "swift.path.swift_driver_bin": "/usr/bin/swift",
+        "swift.path.swift_driver": "/usr/bin/swift",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true
+      }
+    }
+  },
+  "forwardPorts": [8080],
+  "postCreateCommand": "swift --version && echo 'Swift development environment is ready!'",
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/usr/bin"
+  },
+  "remoteUser": "vscode"
+}
