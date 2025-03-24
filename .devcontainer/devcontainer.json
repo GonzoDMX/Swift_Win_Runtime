@@ -1,39 +1,24 @@
 {
   "name": "Swift Development Environment",
-  "dockerFile": "Dockerfile",
+  "image": "swift:5.9-jammy",
   "runArgs": [
-    "--cap-add=SYS_PTRACE",
-    "--security-opt", "seccomp=unconfined"
+    "--network=host"
   ],
+  
   "customizations": {
     "vscode": {
       "extensions": [
-        "sswg.swift-lang",
-        "vadimcn.vscode-lldb",
-        "ms-azuretools.vscode-docker",
-        "ms-vscode.cpptools"
+        "sswg.swift-lang"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "/bin/bash"
-          }
-        },
-        "swift.path.swift_driver_bin": "/usr/bin/swift",
         "swift.path.swift_driver": "/usr/bin/swift",
-        "editor.formatOnSave": true,
-        "editor.tabSize": 4,
-        "editor.insertSpaces": true,
-        "files.trimTrailingWhitespace": true,
-        "files.insertFinalNewline": true
+        "swift.path.swift_driver_bin": "/usr/bin/swift"
       }
     }
   },
-  "forwardPorts": [8080],
-  "postCreateCommand": "swift --version && echo 'Swift development environment is ready!'",
-  "remoteEnv": {
-    "PATH": "${containerEnv:PATH}:/usr/bin"
-  },
-  "remoteUser": "vscode"
+
+  "postCreateCommand": "which swift && swift --version",
+  
+  "onCreateCommand": "echo 'Swift path: ' && which swift && ls -la /usr/bin/swift"
 }
