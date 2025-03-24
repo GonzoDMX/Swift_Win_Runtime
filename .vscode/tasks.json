@@ -27,35 +27,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Compile and Run Current Swift File",
-      "type": "shell",
-      "command": "swiftc ${file} -o ${fileDirname}/${fileBasenameNoExtension} && ${fileDirname}/${fileBasenameNoExtension}",
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Swift Package: Build",
-      "type": "shell",
-      "command": "if [ -f \"Package.swift\" ]; then swift build; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Swift Package: Run",
+      "label": "Run Swift Package",
       "type": "shell",
       "command": "if [ -f \"Package.swift\" ]; then swift run; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
       "options": {
@@ -69,41 +41,13 @@
       "problemMatcher": []
     },
     {
-      "label": "Swift Package: Test",
+      "label": "Build Swift Package",
       "type": "shell",
-      "command": "if [ -f \"Package.swift\" ]; then swift test; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
+      "command": "if [ -f \"Package.swift\" ]; then swift build; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Swift Package: Update Dependencies",
-      "type": "shell",
-      "command": "if [ -f \"Package.swift\" ]; then swift package update; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "none",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Swift Package: Clean",
-      "type": "shell",
-      "command": "if [ -f \"Package.swift\" ]; then swift package clean; else echo \"Not a Swift package directory (no Package.swift found)\"; fi",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "none",
+      "group": "build",
       "presentation": {
         "reveal": "always",
         "panel": "new"

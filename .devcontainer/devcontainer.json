@@ -4,21 +4,12 @@
   "runArgs": [
     "--network=host"
   ],
-  
+
   "customizations": {
     "vscode": {
-      "extensions": [
-        "sswg.swift-lang"
-      ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "swift.path.swift_driver": "/usr/bin/swift",
-        "swift.path.swift_driver_bin": "/usr/bin/swift"
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
-  },
-
-  "postCreateCommand": "which swift && swift --version",
-  
-  "onCreateCommand": "echo 'Swift path: ' && which swift && ls -la /usr/bin/swift"
+  }
 }
