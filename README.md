@@ -14,9 +14,10 @@ This repository contains a pre-configured Swift development environment for Wind
 ### Quick Setup (Recommended)
 
 1. **Clone this repository:**
-   ```
+
+   ```bash
    git clone https://github.com/GonzoDMX/Swift_Win_Runtime.git
-   cd swift-course-windows
+   cd ./Swift_Win_Runtime
    ```
 
 *Note: You can also use the GitHub desktop app if you prefer.*
