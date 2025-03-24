@@ -15,72 +15,42 @@ This repository contains a pre-configured Swift development environment for Wind
 
 1. **Clone this repository:**
    ```
-   git clone https://github.com/your-username/swift-course-windows.git
+   git clone https://github.com/GonzoDMX/Swift_Win_Runtime.git
    cd swift-course-windows
    ```
 
-2. **Run the automated setup script:**
-   - Right-click `setup.ps1` and select "Run with PowerShell"
-   - The script will check for and install required software
-   - Follow any on-screen prompts
+*Note: You can also use the GitHub desktop app if you prefer.*
+
+2. **Install Docker Desktop:**
+    - https://www.docker.com/products/docker-desktop/
+    - You do not need to create an account
+    - Must start Docker Desktop before starting VS Code
 
 3. **Start coding:**
-   - VS Code will open automatically
+   - Open VS Code
+   - Open the project directory
    - When prompted, click "Reopen in Container"
    - Wait for the container to build (first time only, may take 5-10 minutes)
    - You're ready to write Swift code!
 
-### Manual Setup
-
-If the automated script doesn't work for your system:
-
-1. **Install required software:**
-   - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-   - Install [Visual Studio Code](https://code.visualstudio.com/)
-   - Install required VS Code extensions:
-     - Remote - Containers
-     - Swift
-     - CodeLLDB
-
-2. **Clone this repository:**
-   ```
-   git clone https://github.com/your-username/swift-course-windows.git
-   cd swift-course-windows
-   ```
-
-3. **Open in VS Code and start the container:**
-   - Open VS Code
-   - File > Open Folder > Select the cloned repository
-   - When prompted, click "Reopen in Container"
-   - Alternatively, press F1, type "Remote-Containers: Reopen in Container" and select it
-
-## Course Materials
-
-This repository is organized as follows:
+## Repositories
 
 - **Examples**: Sample Swift code demonstrating key concepts
-  - **BasicSyntax**: Fundamental Swift language features
-  - **OOP**: Object-oriented programming examples
-  - **SimplePackage**: Basic Swift package structure
-  - **ConsoleApp**: Command-line application example
+  - **01_hello_world.swift**: Basic hello world program.
+  - **02_variables.swift**: Usage examples for base swift variables.
+  - **03_functions.swift**: Basic Swift functions examples.
+  - **04_foundations.swift**: Examples of common usages for the Foundation library.
 
-- **Assignments**: Starter code for course assignments
-  - Each assignment includes a README with requirements
-
-- **Resources**: Additional reference materials
-  - Swift syntax cheat sheet
-  - Style guide
-  - Troubleshooting common issues
-
-## Working with Swift
+- **Packages**: Empty directory, reserved for your projects.
 
 ### Running Swift Code
 
-#### Single Swift Files
+In VS Code terminal programs can be tested by using the `swift` command.
 
-To run a single Swift file:
-1. Open the Swift file in VS Code
-2. Press Ctrl+Shift+B or use the "Run Current Swift File" task
+```bash
+// Example usage
+swift main.swift
+```
 
 #### Swift Packages
 
@@ -102,18 +72,6 @@ The Swift development container includes:
 - LLDB debugger
 - SourceKit-LSP for code navigation
 - Git for version control
-- Node.js for web development
-
-## Assignments
-
-The assignments follow this general structure:
-
-1. **Assignment 1**: Basic Swift syntax and control flow
-2. **Assignment 2**: Functions, collections, and optionals
-3. **Assignment 3**: Object-oriented programming concepts
-4. **Final Project**: Comprehensive Swift application
-
-Each assignment folder contains a README with specific requirements and starter code.
 
 ## Troubleshooting
 
